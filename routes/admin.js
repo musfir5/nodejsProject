@@ -1,5 +1,5 @@
 var express = require('express');
-var prodHelpers = require('../productHelpers/prod-helpers');
+var prodHelpers = require('../Helpers/prod-helpers');
 var router = express.Router();
 
 
