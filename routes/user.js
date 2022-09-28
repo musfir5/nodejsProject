@@ -2,7 +2,16 @@ const { response } = require('express');
 var express = require('express');
 var router = express.Router();
 var prodHelpers = require('../Helpers/prod-helpers');
-const userHelpers = require('../Helpers/user-helpers')
+const userHelpers = require('../Helpers/user-helpers');
+const verifyLogin = (req, res, next) => { //.........to check the user is verify or not....// this function add where we want to check user login..//
+
+    if (req.session.lggedIn) {
+        next()
+    } else {
+
+        res.redirect('/login')
+    }
+};
 
 
 
@@ -22,7 +31,18 @@ router.get('/', function(req, res, next) {
 
 router.get('/login', (req, res) => {
 
-    res.render('user/login')
+    if (req.session.lggedIn) {
+
+        res.redirect('/')
+    } else {
+
+
+        res.render('user/login', { 'loginErr': req.session.loginErr })
+        req.session.loginErr = false
+
+    }
+
+
 })
 
 router.get('/signup', (req, res) => {
@@ -48,6 +68,7 @@ router.post('/login', (req, res) => {
             res.redirect('/') //......redirect used for calling already used HBS file..........................//
 
         } else {
+            req.session.loginErr = "Invalid username or password!?"
 
             res.redirect('/login')
         }
@@ -61,6 +82,11 @@ router.get('/logout', (req, res) => {
     res.redirect('/')
 })
 
+router.get('/cart', verifyLogin, (req, res) => {
+
+
+    res.render('user/cart')
+})
 
 
 module.exports = router;

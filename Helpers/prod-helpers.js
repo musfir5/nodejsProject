@@ -1,6 +1,9 @@
 const { resolve, reject } = require('promise');
 var db = require('../config/connection')
-var collection = require('../config/collections')
+var collection = require('../config/collections');
+const { response } = require('express');
+const { ObjectId } = require('mongodb');
+var objectId = require('mongodb').ObjectID
 
 module.exports = {
 
@@ -23,5 +26,15 @@ module.exports = {
             resolve(products)
         })
 
+    },
+    deleteProduct: (prodId) => {
+
+        return new Promise((resolve, reject) => {
+
+            db.get().collection(collection.PRODUCT_COLLECTION).deleteOne({ _id: objectId(prodId) }).then((response) => {
+                //console.log(response)
+                resolve(response)
+            })
+        })
     }
 }

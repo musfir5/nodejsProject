@@ -1,3 +1,4 @@
+const { response } = require('express');
 var express = require('express');
 var prodHelpers = require('../Helpers/prod-helpers');
 var router = express.Router();
@@ -40,6 +41,19 @@ router.post('/add-product', (req, res) => {
 
 
     })
+})
+
+router.get('/delete-product/:id', (req, res) => {
+
+    let proId = req.params.id //......get the :id of the product..........//
+    console.log(proId)
+    prodHelpers.deleteProduct(proId).then((response) => {
+
+        res.redirect('/admin/')
+    })
+
+
+
 })
 
 module.exports = router;
